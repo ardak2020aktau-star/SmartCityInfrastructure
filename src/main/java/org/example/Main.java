@@ -1,15 +1,22 @@
 package org.example;
 
-import dsu.DSU;
+import graph.Edge;
+import mst.Kruskal;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Main {
     public static void main(String[] args) {
-        DSU dsu = new DSU(4);
+        List<Edge> roads = new ArrayList<>();
 
-        dsu.union(0, 1);
-        dsu.union(1, 2);
+        roads.add(new Edge(0, 1, 10));
+        roads.add(new Edge(0, 2, 6));
+        roads.add(new Edge(0, 3, 5));
+        roads.add(new Edge(1, 3, 15));
+        roads.add(new Edge(2, 3, 4));
 
-        System.out.println(dsu.find(0) == dsu.find(2));
-        System.out.println(dsu.find(0) == dsu.find(3));
+        int result = Kruskal.findMST(4, roads);
+
+        System.out.println("Total MST weight: " + result);
     }
 }
