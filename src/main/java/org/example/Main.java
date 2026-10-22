@@ -1,15 +1,15 @@
 package org.example;
 
-import graph.Graph;
+import dsu.DSU;
 
 public class Main {
     public static void main(String[] args) {
-        Graph city = new Graph(4);
+        DSU dsu = new DSU(4);
 
-        city.addEdge(0, 1, 10);
-        city.addEdge(1, 2, 20);
-        city.addEdge(2, 3, 15);
+        dsu.union(0, 1);
+        dsu.union(1, 2);
 
-        city.printEdges();
+        System.out.println(dsu.find(0) == dsu.find(2));
+        System.out.println(dsu.find(0) == dsu.find(3));
     }
 }

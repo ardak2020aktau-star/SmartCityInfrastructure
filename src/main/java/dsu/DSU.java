@@ -20,4 +20,25 @@ public class DSU {
         return parent[x];
     }
 
+    public boolean union(int a, int b) {
+        int rootA = find(a);
+        int rootB = find(b);
+
+        if (rootA == rootB) {
+            return false;
+        }
+
+        if (rank[rootA] < rank[rootB]) {
+            parent[rootA] = rootB;
+        } else if (rank[rootA] > rank[rootB]) {
+            parent[rootB] = rootA;
+        } else {
+            parent[rootB] = rootA;
+            rank[rootA]++;
+        }
+
+        return true;
+    }
+
+
 }
