@@ -10,13 +10,9 @@ public class Main {
         List<Edge> roads = new ArrayList<>();
 
         roads.add(new Edge(0, 1, 10));
-        roads.add(new Edge(0, 2, 6));
-        roads.add(new Edge(0, 3, 5));
-        roads.add(new Edge(1, 3, 15));
-        roads.add(new Edge(2, 3, 4));
 
-        int result = Kruskal.findMST(4, roads);
+        int result = Kruskal.findMST(3, roads);
 
-        System.out.println("Total MST weight: " + result);
+        System.out.println("MST result: " + result);
     }
 }
