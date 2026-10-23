@@ -1,6 +1,7 @@
 package org.example;
 
 import graph.Edge;
+import mst.Kruskal;
 import mst.Prim;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,8 +16,16 @@ public class Main {
         roads.add(new Edge(1, 3, 15));
         roads.add(new Edge(2, 3, 4));
 
-        int result = Prim.findMST(4, roads);
+        System.out.println("=== Kruskal ===");
+        int kruskalWeight = Kruskal.findMST(4, roads);
 
-        System.out.println("Total MST weight: " + result);
+        System.out.println("\n=== Prim ===");
+        int primWeight = Prim.findMST(4, roads);
+
+        System.out.println("\n=== Comparison ===");
+        System.out.println("Kruskal MST: " + kruskalWeight);
+        System.out.println("Prim MST: " + primWeight);
+        System.out.println("Same weight: "
+                + (kruskalWeight == primWeight));
     }
 }
