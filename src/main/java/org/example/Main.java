@@ -10,11 +10,11 @@ public class Main {
     public static void main(String[] args) {
         List<Edge> roads = new ArrayList<>();
 
-        roads.add(new Edge(0, 1, 10));
-        roads.add(new Edge(0, 2, 6));
-        roads.add(new Edge(0, 3, 5));
-        roads.add(new Edge(1, 3, 15));
-        roads.add(new Edge(2, 3, 4));
+        roads.add(new Edge(0, 1, 5));
+        roads.add(new Edge(0, 2, 5));
+        roads.add(new Edge(1, 3, 5));
+        roads.add(new Edge(2, 3, 5));
+        roads.add(new Edge(0, 3, 10));
 
         System.out.println("=== Kruskal ===");
         int kruskalWeight = Kruskal.findMST(4, roads);
