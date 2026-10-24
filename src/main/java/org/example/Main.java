@@ -1,6 +1,8 @@
+
 package org.example;
 
 import connectivity.DirectedGraph;
+import connectivity.TopologicalSort;
 
 public class Main {
     public static void main(String[] args) {
@@ -11,6 +13,7 @@ public class Main {
         city.addEdge(1, 3);
         city.addEdge(2, 3);
 
-        city.printGraph();
+        System.out.println("Topological order:");
+        System.out.println(TopologicalSort.sort(city));
     }
 }
