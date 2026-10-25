@@ -1,42 +1,22 @@
 package org.example;
-import connectivity.DirectedGraph;
-import connectivity.Kosaraju;
+import graph.Edge;
+import shortestpath.Dijkstra;
+import java.util.ArrayList;
 import java.util.List;
+
 public class Main {
     public static void main(String[] args) {
-        DirectedGraph city = new DirectedGraph(6);
+        List<Edge> roads = new ArrayList<>();
 
-        city.addEdge(0, 1);
-        city.addEdge(1, 2);
-        city.addEdge(2, 0);
+        roads.add(new Edge(0, 1, 4));
+        roads.add(new Edge(0, 2, 10));
+        roads.add(new Edge(1, 2, 2));
+        roads.add(new Edge(1, 3, 3));
+        roads.add(new Edge(2, 3, 1));
 
-        city.addEdge(2, 3);
-        city.addEdge(3, 4);
-        city.addEdge(4, 3);
-
-        city.addEdge(4, 5);
-        List<List<Integer>> components = Kosaraju.findSCC(city);
-
-        System.out.println("SCC: " + components);
-        System.out.println("Number of SCC: " + components.size());
-
-        boolean[] seen = new boolean[6];
-        boolean valid = true;
-        for (List<Integer> component : components) {
-            for (int vertex : component) {
-                if (seen[vertex]) {
-                    valid = false;
-                }
-                seen[vertex] = true;
-            }
+        int[] distances = Dijkstra.shortestPaths(4, roads, 0);
+        for (int i = 0; i < distances.length; i++) {
+            System.out.println("Distance to " + i + ": " + distances[i]);
         }
-
-        for (boolean visited : seen) {
-            if (!visited) {
-                valid = false;
-            }
-        }
-        System.out.println("Every vertex belongs to exactly one SCC: "
-                + valid);
     }
 }
