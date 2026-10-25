@@ -1,24 +1,46 @@
 package shortestpath;
 import graph.Edge;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.List;
-import java.util.PriorityQueue;
+import java.util.*;
 
 public class Dijkstra {
-    public static int[] shortestPaths(int vertices,
-                                      List<Edge> edges,
-                                      int source) {
+    public static class Result {
+        public long[] distances;
+        public int[] parent;
+        public Result(long[] distances, int[] parent) {
+            this.distances = distances;
+            this.parent = parent;
+        }
+
+        public List<Integer> getPath(int target) {
+            List<Integer> path = new ArrayList<>();
+
+            if (target < 0 || target >= distances.length) {
+                throw new IllegalArgumentException("Invalid target");
+            }
+
+            if (distances[target] == Long.MAX_VALUE) {
+                return path;
+            }
+
+            for (int at = target; at != -1; at = parent[at]) {
+                path.add(at);
+            }
+            Collections.reverse(path);
+            return path;
+        }
+    }
+
+    public static Result shortestPathsWithRoutes(
+            int vertices, List<Edge> edges, int source) {
         if (vertices <= 0 || source < 0 || source >= vertices) {
             throw new IllegalArgumentException("Invalid graph or source");
         }
-
         List<List<Edge>> adjacency = new ArrayList<>();
 
         for (int i = 0; i < vertices; i++) {
             adjacency.add(new ArrayList<>());
         }
+
         for (Edge edge : edges) {
             if (edge.weight < 0) {
                 throw new IllegalArgumentException(
@@ -29,39 +51,55 @@ public class Dijkstra {
                     edge.destination < 0 || edge.destination >= vertices) {
                 throw new IllegalArgumentException("Invalid edge vertex");
             }
-
             adjacency.get(edge.source).add(edge);
         }
 
-        int[] distance = new int[vertices];
-        Arrays.fill(distance, Integer.MAX_VALUE);
-        distance[source] = 0;
+        long[] distances = new long[vertices];
+        int[] parent = new int[vertices];
 
-        PriorityQueue<int[]> queue = new PriorityQueue<>(
-                Comparator.comparingInt(a -> a[1])
+        Arrays.fill(distances, Long.MAX_VALUE);
+        Arrays.fill(parent, -1);
+        distances[source] = 0;
+        PriorityQueue<long[]> queue = new PriorityQueue<>(
+                Comparator.comparingLong(a -> a[1])
         );
 
-        queue.add(new int[]{source, 0});
-
+        queue.add(new long[]{source, 0});
         while (!queue.isEmpty()) {
-            int[] current = queue.poll();
-            int vertex = current[0];
-            int currentDistance = current[1];
+            long[] current = queue.poll();
+            int vertex = (int) current[0];
+            long currentDistance = current[1];
 
-            if (currentDistance != distance[vertex]) {
+            if (currentDistance != distances[vertex]) {
                 continue;
             }
+
             for (Edge edge : adjacency.get(vertex)) {
                 int neighbor = edge.destination;
+                long newDistance = distances[vertex] + edge.weight;
 
-                long newDistance = (long) distance[vertex] + edge.weight;
-
-                if (newDistance < distance[neighbor]) {
-                    distance[neighbor] = (int) newDistance;
-                    queue.add(new int[]{neighbor, distance[neighbor]});
+                if (newDistance < distances[neighbor]) {
+                    distances[neighbor] = newDistance;
+                    parent[neighbor] = vertex;
+                    queue.add(new long[]{neighbor, newDistance});
                 }
             }
         }
-        return distance;
+        return new Result(distances, parent);
+    }
+
+    public static int[] shortestPaths(
+            int vertices, List<Edge> edges, int source) {
+        Result result = shortestPathsWithRoutes(vertices, edges, source);
+        int[] distances = new int[vertices];
+
+        for (int i = 0; i < vertices; i++) {
+            if (result.distances[i] >= Integer.MAX_VALUE) {
+                distances[i] = Integer.MAX_VALUE;
+            } else {
+                distances[i] = (int) result.distances[i];
+            }
+        }
+        return distances;
     }
 }
