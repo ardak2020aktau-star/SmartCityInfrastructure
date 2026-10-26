@@ -1,7 +1,7 @@
 package org.example;
-import experiment.DirectedBenchmark;
+import experiment.DijkstraBenchmark;
 public class Main {
     public static void main(String[] args) {
-        DirectedBenchmark.runBenchmarks();
+        DijkstraBenchmark.runBenchmarks();
     }
 }
