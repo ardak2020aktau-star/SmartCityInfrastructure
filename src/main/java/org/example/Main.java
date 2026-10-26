@@ -1,17 +1,29 @@
 package org.example;
 
+import experiment.GraphGenerator;
 import graph.Edge;
-import shortestpath.Dijkstra;
-import java.util.ArrayList;
+import mst.Kruskal;
+import mst.Prim;
 import java.util.List;
+
 public class Main {
     public static void main(String[] args) {
-        List<Edge> roads = new ArrayList<>();
-        Dijkstra.Result result =
-                Dijkstra.shortestPathsWithRoutes(1, roads, 0);
+        int vertices = 10;
+        int edgeCount = 30;
+        long seed = 42;
+        List<Edge> roads =
+                GraphGenerator.generateConnectedGraph(
+                        vertices, edgeCount, seed
+                );
+        System.out.println("Vertices: " + vertices);
+        System.out.println("Edges: " + roads.size());
 
-        System.out.println("Single Vertex Graph Test");
-        System.out.println("Distance: " + result.distances[0]);
-        System.out.println("Path: " + result.getPath(0));
+        int kruskal = Kruskal.findMST(vertices, roads);
+        int prim = Prim.findMST(vertices, roads);
+
+        System.out.println("Kruskal weight: " + kruskal);
+        System.out.println("Prim weight: " + prim);
+        System.out.println("MST weights match: "
+                + (kruskal == prim));
     }
 }
