@@ -49,9 +49,6 @@ public class Prim {
             visitedCount++;
             totalWeight += edge.weight;
 
-            System.out.println("Selected: " + edge.source
-                    + " - " + edge.destination
-                    + " (weight: " + edge.weight + ")");
 
             for (Edge next : adjacency.get(edge.destination)) {
                 if (!visited[next.destination]) {

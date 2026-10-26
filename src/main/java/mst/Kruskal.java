@@ -21,10 +21,6 @@ public class Kruskal {
                 totalWeight += edge.weight;
                 edgesUsed++;
 
-                System.out.println("Selected: " + edge.source
-                        + " - " + edge.destination
-                        + " (weight: " + edge.weight + ")");
-
                 if (edgesUsed == vertices - 1) {
                     break;
                 }
