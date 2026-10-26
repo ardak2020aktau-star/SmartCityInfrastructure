@@ -1,8 +1,10 @@
 package dsu;
+
 public class DSU {
     private int[] parent;
     private int[] rank;
-
+    private long findCount = 0;
+    private long unionCount = 0;
     public DSU(int n) {
         parent = new int[n];
         rank = new int[n];
@@ -12,15 +14,16 @@ public class DSU {
             rank[i] = 0;
         }
     }
-
     public int find(int x) {
+        findCount++;
         if (parent[x] != x) {
             parent[x] = find(parent[x]);
         }
         return parent[x];
     }
-
     public boolean union(int a, int b) {
+        unionCount++;
+
         int rootA = find(a);
         int rootB = find(b);
 
@@ -36,9 +39,13 @@ public class DSU {
             parent[rootB] = rootA;
             rank[rootA]++;
         }
-
         return true;
     }
 
-
+    public long getFindCount() {
+        return findCount;
+    }
+    public long getUnionCount() {
+        return unionCount;
+    }
 }
