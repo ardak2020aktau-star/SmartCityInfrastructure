@@ -231,6 +231,32 @@ Operation counts use algorithm-specific definitions and should not be interprete
 
 ## Results
 
+The following tables summarize the average execution times measured over five runs.
+
+### MST Performance Comparison
+
+| Vertices | Edges | Kruskal (ms) | Prim (ms) |
+|---:|---:|---:|---:|
+| 10 | 30 | 0.037800 | 0.071820 |
+| 100 | 500 | 0.408320 | 0.368540 |
+| 1000 | 5000 | 1.379980 | 1.303040 |
+
+### Shortest Path Performance
+
+| Vertices | Edges | Dijkstra (ms) |
+|---:|---:|---:|
+| 10 | 30 | 0.041660 |
+| 100 | 500 | 0.226000 |
+| 1000 | 5000 | 0.978500 |
+
+### Directed Graph Performance
+
+| Vertices | Edges | Topological DAG (ms) | Topological Cyclic (ms) | Kosaraju SCC (ms) |
+|---:|---:|---:|---:|---:|
+| 10 | 30 | 0.022960 | 0.007240 | 0.043600 |
+| 100 | 500 | 0.153260 | 0.058840 | 0.149220 |
+| 1000 | 5000 | 0.588960 | 0.312260 | 0.944200 |
+
 ### Performance Plots
 
 #### Execution Time vs Number of Vertices
@@ -241,3 +267,14 @@ Operation counts use algorithm-specific definitions and should not be interprete
 
 ![Execution Time vs Edges](results/plots/time_vs_edges.png)
 
+Both plots compare Kruskal's and Prim's algorithms using the measured benchmark results.
+
+The number of vertices and edges increases together across the three graph configurations. Therefore, the plots illustrate performance changes across the selected graph sizes rather than the independent effect of each variable.
+
+### Operation Counts
+
+Detailed operation counts for all algorithms are available in:
+
+[Benchmark Results CSV](results/tables/benchmark_results.csv)
+
+The CSV includes the average execution time, examined edges, and algorithm-specific operation counts for each graph configuration.
