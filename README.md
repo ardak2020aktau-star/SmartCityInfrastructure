@@ -167,3 +167,65 @@ Topological Sort and Kosaraju have linear O(V + E) complexity.
 Dijkstra also uses a priority queue, so its runtime generally increases faster than linear traversal algorithms as graph size grows.
 
 Actual execution times may differ because of JVM optimization, memory allocation, graph structure, and system load.
+
+## Experimental Setup
+
+The performance of the implemented algorithms was evaluated using three graph configurations.
+
+| Graph Size | Vertices (V) | Edges (E) |
+|---|---:|---:|
+| Small | 10 | 30 |
+| Medium | 100 | 500 |
+| Large | 1000 | 5000 |
+
+### Graph Generation
+
+All graphs were generated using a fixed random seed of 42 to ensure reproducibility.
+
+For MST experiments, connected undirected graphs were generated. A chain connecting all vertices was created first, followed by additional randomly generated edges.
+
+For directed graph experiments, two types of graphs were generated:
+
+- DAG: edges were directed from smaller to larger vertex indices, ensuring that no directed cycles exist.
+- Cyclic graphs: a cycle (0 -> 1 -> 2 -> 0) was created first, followed by additional random directed edges.
+
+Duplicate edges and self-loops were excluded during graph generation.
+
+For Dijkstra experiments, generated edges were interpreted as directed connections with positive weights.
+
+### Measurement Procedure
+
+Each algorithm was tested on all three graph sizes.
+
+The following procedure was used:
+
+1. Generate a graph using the fixed random seed.
+2. Execute three warm-up runs before measurement.
+3. Run each algorithm five times.
+4. Measure execution time using System.nanoTime().
+5. Calculate average execution time in milliseconds.
+6. Record relevant operation counts.
+7. Export results to a CSV file.
+
+The benchmark results are stored in:
+
+`results/tables/benchmark_results.csv`
+
+Performance plots are stored in:
+
+`results/plots/`
+
+The experiments were executed using Java and Maven.
+
+### Operation Counting
+
+The following operations were recorded:
+
+- Kruskal: examined edges, DSU find calls, and union calls.
+- Prim: examined adjacency entries and priority queue operations.
+- Dijkstra: examined directed edges and priority queue operations.
+- Topological Sort: examined directed edges.
+- Kosaraju: examined edges during DFS and graph reversal, and DFS vertex visits.
+
+Operation counts use algorithm-specific definitions and should not be interpreted as identical units of computational work.
+
