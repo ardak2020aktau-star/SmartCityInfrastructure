@@ -229,3 +229,15 @@ The following operations were recorded:
 
 Operation counts use algorithm-specific definitions and should not be interpreted as identical units of computational work.
 
+## Results
+
+### Performance Plots
+
+#### Execution Time vs Number of Vertices
+
+![Execution Time vs Vertices](results/plots/time_vs_vertices.png)
+
+#### Execution Time vs Number of Edges
+
+![Execution Time vs Edges](results/plots/time_vs_edges.png)
+
