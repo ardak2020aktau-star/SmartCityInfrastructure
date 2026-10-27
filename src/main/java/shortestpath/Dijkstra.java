@@ -6,14 +6,14 @@ public class Dijkstra {
     public static class Result {
         public long[] distances;
         public int[] parent;
+        public long edgesExamined;
+        public long queueOperations;
         public Result(long[] distances, int[] parent) {
             this.distances = distances;
             this.parent = parent;
         }
-
         public List<Integer> getPath(int target) {
             List<Integer> path = new ArrayList<>();
-
             if (target < 0 || target >= distances.length) {
                 throw new IllegalArgumentException("Invalid target");
             }
@@ -29,7 +29,6 @@ public class Dijkstra {
             return path;
         }
     }
-
     public static Result shortestPathsWithRoutes(
             int vertices, List<Edge> edges, int source) {
         if (vertices <= 0 || source < 0 || source >= vertices) {
@@ -53,7 +52,6 @@ public class Dijkstra {
             }
             adjacency.get(edge.source).add(edge);
         }
-
         long[] distances = new long[vertices];
         int[] parent = new int[vertices];
 
@@ -63,10 +61,12 @@ public class Dijkstra {
         PriorityQueue<long[]> queue = new PriorityQueue<>(
                 Comparator.comparingLong(a -> a[1])
         );
-
         queue.add(new long[]{source, 0});
+        long edgesExamined = 0;
+        long queueOperations = 1;
         while (!queue.isEmpty()) {
             long[] current = queue.poll();
+            queueOperations++;
             int vertex = (int) current[0];
             long currentDistance = current[1];
 
@@ -75,6 +75,7 @@ public class Dijkstra {
             }
 
             for (Edge edge : adjacency.get(vertex)) {
+                edgesExamined++;
                 int neighbor = edge.destination;
                 long newDistance = distances[vertex] + edge.weight;
 
@@ -82,12 +83,15 @@ public class Dijkstra {
                     distances[neighbor] = newDistance;
                     parent[neighbor] = vertex;
                     queue.add(new long[]{neighbor, newDistance});
+                    queueOperations++;
                 }
             }
         }
-        return new Result(distances, parent);
+        Result result = new Result(distances, parent);
+        result.edgesExamined = edgesExamined;
+        result.queueOperations = queueOperations;
+        return result;
     }
-
     public static int[] shortestPaths(
             int vertices, List<Edge> edges, int source) {
         Result result = shortestPathsWithRoutes(vertices, edges, source);
