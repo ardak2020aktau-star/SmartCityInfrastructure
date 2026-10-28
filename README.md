@@ -278,3 +278,79 @@ Detailed operation counts for all algorithms are available in:
 [Benchmark Results CSV](results/tables/benchmark_results.csv)
 
 The CSV includes the average execution time, examined edges, and algorithm-specific operation counts for each graph configuration.
+
+## Comparison and Discussion
+
+### Kruskal vs Prim
+
+Both Kruskal's and Prim's algorithms find a minimum spanning tree for a connected, undirected, weighted graph.
+
+Kruskal sorts all edges by weight and uses DSU to avoid cycles. Prim starts from one vertex and expands the MST using a priority queue.
+
+According to the experimental results:
+
+- For 10 vertices, Kruskal was faster (0.037800 ms vs 0.071820 ms).
+- For 100 vertices, Prim was faster (0.368540 ms vs 0.408320 ms).
+- For 1000 vertices, Prim was slightly faster (1.303040 ms vs 1.379980 ms).
+
+The results show that Prim performed better on the medium and large graphs in these measurements.
+
+However, the difference may depend on graph structure, JVM optimization, and system load. Five runs are not enough to establish a universal performance advantage.
+
+### DSU Performance
+
+Kruskal uses Disjoint Set Union with path compression and union by rank.
+
+Path compression reduces the length of paths to root vertices, while union by rank prevents trees from becoming unnecessarily deep.
+
+These optimizations make find and union operations very efficient, with amortized complexity O(α(V)).
+
+### Strongly Connected Components
+
+Kosaraju's algorithm has theoretical time complexity O(V + E).
+
+The measured execution times were:
+
+- 10 vertices: 0.043600 ms
+- 100 vertices: 0.149220 ms
+- 1000 vertices: 0.944200 ms
+
+The execution time increased as the graph became larger, which is consistent with the algorithm processing more vertices and edges.
+
+### Topological Sorting
+
+Topological sorting was tested on both DAGs and cyclic graphs.
+
+For DAGs, the algorithm returned a valid ordering.
+
+For cyclic graphs, the algorithm detected that a complete topological ordering was impossible.
+
+The cyclic graph experiments were faster in the recorded measurements. This does not imply that cycle detection is always faster, since performance depends on graph structure and processing order.
+
+### Dijkstra's Algorithm
+
+Dijkstra's algorithm was tested using directed graphs with non-negative edge weights.
+
+The measured execution times were:
+
+- 10 vertices: 0.041660 ms
+- 100 vertices: 0.226000 ms
+- 1000 vertices: 0.978500 ms
+
+Execution time increased with graph size.
+
+The algorithm uses a priority queue to efficiently select vertices with the smallest tentative distances.
+
+The implementation also supports path reconstruction and unreachable vertices.
+
+### Theoretical vs Experimental Results
+
+The theoretical complexity analysis describes how algorithms scale as the input size increases.
+
+The experimental results generally show increased execution time for larger graphs.
+
+However, real execution times are influenced by additional factors such as JVM warm-up, garbage collection, CPU scheduling, and memory allocation.
+
+Furthermore, the number of vertices and edges increased together in the experiments, so their individual effects cannot be isolated from these measurements.
+
+Overall, the experimental results are broadly consistent with the expected algorithmic behavior, but additional repetitions would be needed for more reliable performance comparisons.
