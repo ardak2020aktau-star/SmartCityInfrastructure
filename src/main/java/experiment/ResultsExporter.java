@@ -1,5 +1,4 @@
 package experiment;
-
 import connectivity.DirectedGraph;
 import connectivity.Kosaraju;
 import connectivity.TopologicalSort;
@@ -20,7 +19,7 @@ public class ResultsExporter {
     private static final long SEED = 42;
     public static void export() throws IOException {
         List<String> rows = new ArrayList<>();
-        rows.add("Algorithm,GraphType,Vertices,Edges,AverageMs,EdgesExamined,OtherOperations");
+        rows.add("Algorithm,GraphType,Vertices,Edges,AverageMs,EdgesExamined,OtherOperations,FindOperations,UnionOperations,QueueOperations,DfsVisits");
         for (int i = 0; i < VERTICES.length; i++) {
             int v = VERTICES[i];
             int e = EDGES[i];
@@ -41,6 +40,8 @@ public class ResultsExporter {
             long[] times = new long[6];
             long[] examined = new long[6];
             long[] operations = new long[6];
+            long finds = 0;
+            long unions = 0;
             for (int j = 0; j < REPEATS; j++) {
                 long start;
                 start = System.nanoTime();
@@ -48,6 +49,8 @@ public class ResultsExporter {
                 times[0] += System.nanoTime() - start;
                 examined[0] += k.edgesExamined;
                 operations[0] += k.findOperations + k.unionOperations;
+                finds += k.findOperations;
+                unions += k.unionOperations;
                 start = System.nanoTime();
                 Prim.Result p = Prim.findMSTWithStats(v, roads);
                 times[1] += System.nanoTime() - start;
@@ -75,6 +78,12 @@ public class ResultsExporter {
                 times[5] += System.nanoTime() - start;
                 examined[5] += s.edgesExamined;
                 operations[5] += s.dfsVisits;
+                if (!k.connected || !p.connected || k.totalWeight != p.totalWeight) {
+                    throw new IllegalStateException("MST validation failed");
+                }
+                if (t.hasCycle || t.order.size() != v || !tc.hasCycle) {
+                    throw new IllegalStateException("Topological validation failed");
+                }
             }
             String[] names = {
                     "Kruskal", "Prim", "Dijkstra",
@@ -89,10 +98,14 @@ public class ResultsExporter {
                         times[a] / (double) REPEATS / 1_000_000.0;
                 rows.add(String.format(
                         java.util.Locale.US,
-                        "%s,%s,%d,%d,%.6f,%d,%d",
+                        "%s,%s,%d,%d,%.6f,%d,%d,%d,%d,%d,%d",
                         names[a], types[a], v, e, averageMs,
                         examined[a] / REPEATS,
-                        operations[a] / REPEATS
+                        operations[a] / REPEATS,
+                        a == 0 ? finds / REPEATS : 0,
+                        a == 0 ? unions / REPEATS : 0,
+                        a == 1 || a == 2 ? operations[a] / REPEATS : 0,
+                        a == 5 ? operations[a] / REPEATS : 0
                 ));
             }
         }
