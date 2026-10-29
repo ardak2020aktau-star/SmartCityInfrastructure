@@ -10,6 +10,19 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class AlgorithmTest {
+    private static void verifyTree(int vertices, List<Edge> edges, int weight) {
+        assertEquals(vertices - 1, edges.size());
+        dsu.DSU components = new dsu.DSU(vertices);
+        int sum = 0;
+        for (Edge edge : edges) {
+            assertTrue(components.union(edge.source, edge.destination));
+            sum += edge.weight;
+        }
+        assertEquals(weight, sum);
+        for (int i = 0; i < vertices; i++) {
+            assertEquals(components.find(0), components.find(i));
+        }
+    }
     @Test
     void mstAlgorithmsReturnSameWeight() {
         List<Edge> edges = List.of(
@@ -21,6 +34,8 @@ public class AlgorithmTest {
         );
         assertEquals(19, Kruskal.findMST(4, edges));
         assertEquals(19, Prim.findMST(4, edges));
+        verifyTree(4, Kruskal.findMSTWithStats(4, edges).selectedEdges, 19);
+        verifyTree(4, Prim.findMSTWithStats(4, edges).selectedEdges, 19);
     }
     @Test
     void disconnectedGraphIsDetected() {
