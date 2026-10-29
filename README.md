@@ -387,3 +387,33 @@ To reproduce the tests, run:
     mvn test
 
 All 10 automated tests passed successfully.
+
+## Conclusion
+
+This project demonstrates how graph algorithms can be applied to smart city infrastructure planning and route optimization.
+
+The main objectives of the assignment were achieved through the implementation of minimum spanning tree algorithms, connectivity analysis, and shortest path calculations.
+
+Kruskal's and Prim's algorithms were used to find minimum-cost infrastructure networks. Both algorithms produced the same MST weights for the tested connected graphs.
+
+Disjoint Set Union improved Kruskal's efficiency through path compression and union by rank.
+
+Topological sorting was used to analyze dependencies in directed graphs and detect cycles. Kosaraju's algorithm identified strongly connected components in infrastructure networks.
+
+Dijkstra's algorithm calculated shortest distances and reconstructed routes between city districts while handling unreachable vertices and rejecting negative edge weights.
+
+Performance experiments were conducted using graphs with 10, 100, and 1000 vertices. Each algorithm was measured five times using System.nanoTime().
+
+The experimental results showed that execution time generally increased with graph size. Prim was slightly faster than Kruskal on the medium and large graphs in the recorded measurements, although performance differences depend on graph structure and execution conditions.
+
+All 10 automated JUnit tests passed successfully.
+
+Overall, the project demonstrates that different graph algorithms are suitable for different smart city planning tasks:
+
+- Kruskal and Prim are appropriate for minimum-cost infrastructure construction.
+- DSU supports efficient connectivity management.
+- Topological sorting is useful for scheduling infrastructure dependencies.
+- Kosaraju identifies mutually reachable groups of locations.
+- Dijkstra finds efficient routes through weighted road networks.
+
+The project provides a foundation for further development of smart city infrastructure analysis and route planning systems.
