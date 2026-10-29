@@ -354,3 +354,36 @@ However, real execution times are influenced by additional factors such as JVM w
 Furthermore, the number of vertices and edges increased together in the experiments, so their individual effects cannot be isolated from these measurements.
 
 Overall, the experimental results are broadly consistent with the expected algorithmic behavior, but additional repetitions would be needed for more reliable performance comparisons.
+
+## Testing
+
+Automated tests were implemented using JUnit 5.
+
+The test suite includes 10 tests covering:
+
+- Kruskal and Prim MST correctness
+- Disconnected graph detection
+- Topological sorting for DAGs
+- Cycle detection in directed graphs
+- Strongly connected components
+- Dijkstra shortest distances and paths
+- Unreachable vertices
+- Negative edge weight validation
+- Single-vertex graphs
+- Duplicate edge weights
+
+### Test Results
+
+The tests were executed using Maven Surefire.
+
+- Tests run: 10
+- Failures: 0
+- Errors: 0
+- Skipped: 0
+- Build status: SUCCESS
+
+To reproduce the tests, run:
+
+    mvn test
+
+All 10 automated tests passed successfully.
